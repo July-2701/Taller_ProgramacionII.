@@ -1,0 +1,86 @@
+@startuml
+skinparam classBorderColor #4f46e5
+skinparam classArrowColor #818cf8
+
+abstract class Persona {
+  # id: String
+  # nombre: String
+  # apellido: String
+  # fechaNacimiento: Date
+  # telefono: String
+  # direccion: String
+  --
+  + getNombreCompleto(): String
+  + calcularEdad(): int
+}
+abstract class Empleado {
+  # numeroEmpleado: String
+  # salario: double
+  # fechaContratacion: Date
+  --
+  + calcularSalario(): double
+  + getDatosEmpleado(): String
+}
+class Paciente {
+  - historiaClinicaId: String
+  - alergias: List<String>
+  - tipoSangre: String
+  - seguroMedico: String
+  --
+  + registrarCita(CitaMedica cita): void
+  + verHistoriaClinica(): String
+  + agregarAlergia(String alergia): void
+}
+class Medico {
+  - especialidad: String
+  - numeroLicencia: String
+  - consultorio: String
+  --
+  + atenderPaciente(Paciente p): void
+  + generarDiagnostico(String sintomas): String
+  + verCitasDelDia(): List<CitaMedica>
+}
+class Cirujano {
+  - especialidadCirugia: String
+  - numeroQuirofano: String
+  --
+  + programarCirugia(Paciente p): void
+  + realizarCirugia(): void
+}
+class Enfermero {
+  - turno: String
+  - area: String
+  --
+  + tomarSignosVitales(Paciente p): void
+  + asistirMedico(Medico m): void
+}
+class CitaMedica {
+  - fecha: Date
+  - hora: String
+  - estado: String
+  - motivo: String
+  --
+  + confirmarCita(): void
+  + cancelarCita(): void
+  + getDetallesCita(): String
+}
+class HistoriaClinica {
+  - fechaCreacion: Date
+  - diagnosticos: List<String>
+  - tratamientos: List<String>
+  - observaciones: String
+  --
+  + agregarDiagnostico(String diag): void
+  + agregarTratamiento(String trat): void
+  + mostrarHistoria(): String
+}
+
+Persona <|-- Empleado
+Persona <|-- Paciente
+Empleado <|-- Medico
+Medico <|-- Cirujano
+Empleado <|-- Enfermero
+Paciente --> "1" CitaMedica "*"
+Medico --> "1" CitaMedica "*"
+Paciente *-- "1" HistoriaClinica "1"
+@enduml
